@@ -39,12 +39,14 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
         }
         mChecked = checked;
         changeCheckState();
+        dispatchSetChecked(mChecked);
     }
 
     @Override
     public void toggle() {
         mChecked = !mChecked;
         changeCheckState();
+        dispatchSetChecked(mChecked);
     }
 
     @Override
@@ -66,6 +68,14 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
 
         if (mOnCheckedChangeListener != null) {
             mOnCheckedChangeListener.onCheckedChanged(this, mChecked);
+        }
+    }
+
+    public void dispatchSetChecked(boolean checked) {
+        for (int i = 0; i < getChildCount(); i++) {
+            if(getChildAt(i) instanceof Checkable){
+                ((Checkable)getChildAt(i)).setChecked(checked);
+            }
         }
     }
 

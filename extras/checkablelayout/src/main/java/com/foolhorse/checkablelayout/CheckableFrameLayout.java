@@ -39,12 +39,14 @@ public class CheckableFrameLayout extends FrameLayout implements Checkable {
         }
         mChecked = checked;
         changeCheckState();
+        dispatchSetChecked(mChecked);
     }
 
     @Override
     public void toggle() {
         mChecked = !mChecked;
         changeCheckState();
+        dispatchSetChecked(mChecked);
     }
 
     @Override
@@ -68,4 +70,11 @@ public class CheckableFrameLayout extends FrameLayout implements Checkable {
         }
     }
 
+    public void dispatchSetChecked(boolean checked) {
+        for (int i = 0; i < getChildCount(); i++) {
+            if(getChildAt(i) instanceof Checkable){
+                ((Checkable)getChildAt(i)).setChecked(checked);
+            }
+        }
+    }
 }

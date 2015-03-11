@@ -2,6 +2,7 @@ package com.foolhorse.checkablelayout;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
 
@@ -36,12 +37,14 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
         }
         mChecked = checked;
         changeCheckState();
+        dispatchSetChecked(mChecked);
     }
 
     @Override
     public void toggle() {
         mChecked = !mChecked;
         changeCheckState();
+        dispatchSetChecked(mChecked);
     }
 
     @Override
@@ -62,6 +65,14 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
 
         if (mOnCheckedChangeListener != null) {
             mOnCheckedChangeListener.onCheckedChanged(this, mChecked);
+        }
+    }
+
+    public void dispatchSetChecked(boolean checked) {
+        for (int i = 0; i < getChildCount(); i++) {
+            if(getChildAt(i) instanceof Checkable){
+                ((Checkable)getChildAt(i)).setChecked(checked);
+            }
         }
     }
 
